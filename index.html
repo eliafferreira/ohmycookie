@@ -119,12 +119,12 @@ button{font:inherit;cursor:pointer}
 .hero .facts li{display:flex;align-items:center;gap:8px}
 .hero .facts svg{width:18px;height:18px;color:var(--manteiga)}
 
-.hero-visual{position:relative;justify-self:center;width:min(84%,430px)}
+.hero-visual{position:relative;justify-self:center;width:min(78%,400px)}
 @media (min-width:900px){.hero-visual{width:min(100%,430px)}}
-.arch{border-radius:999px 999px var(--r-lg) var(--r-lg);overflow:hidden;aspect-ratio:4/5.3;background:var(--caramelo);box-shadow:0 30px 60px rgba(36,9,15,.35);transform:rotate(2.5deg);opacity:0;animation:rise 1s .2s cubic-bezier(.2,.9,.3,1) forwards}
-.arch img{width:100%;height:100%;object-fit:cover;object-position:50% 40%}
-@keyframes rise{from{opacity:0;transform:translateY(40px) rotate(8deg)}to{opacity:1;transform:rotate(2.5deg)}}
-.sticker{text-decoration:none;position:absolute;left:-26px;bottom:34px;width:128px;height:128px;border-radius:50%;background:var(--manteiga);color:var(--bordo);display:grid;place-items:center;box-shadow:0 10px 24px rgba(36,9,15,.3);transform:rotate(-10deg)}
+.hero-stack{width:100%;height:auto;filter:drop-shadow(0 28px 30px rgba(36,9,15,.45));opacity:0;animation:rise 1s .2s cubic-bezier(.2,.9,.3,1) forwards, bob 6s 1.4s ease-in-out infinite}
+@keyframes rise{from{opacity:0;transform:translateY(50px) rotate(6deg)}to{opacity:1;transform:rotate(-2deg)}}
+@keyframes bob{0%,100%{transform:rotate(-2deg) translateY(0)}50%{transform:rotate(-1deg) translateY(-10px)}}
+.sticker{text-decoration:none;position:absolute;left:-18px;bottom:8%;z-index:2;width:128px;height:128px;border-radius:50%;background:var(--manteiga);color:var(--bordo);display:grid;place-items:center;box-shadow:0 10px 24px rgba(36,9,15,.3);transform:rotate(-10deg)}
 .sticker svg.ring{position:absolute;inset:0;width:100%;height:100%;animation:spin 14s linear infinite}
 .sticker text{font-family:var(--sans);font-weight:800;font-size:11.2px;letter-spacing:.14em;fill:var(--bordo)}
 .sticker .mid{font-family:var(--display);font-weight:900;font-size:2.4rem;line-height:.85;text-align:center}
@@ -400,7 +400,7 @@ body.cart-open .wa-float{transform:translateY(-82px)}
       </ul>
     </div>
     <div class="hero-visual">
-      <div class="arch"><img src="img/hero.webp" alt="" data-i18n-alt="hero.alt" width="760" height="1360" fetchpriority="high"></div>
+      <img class="hero-stack" src="img/hero-stack.webp" alt="" data-i18n-alt="hero.alt" width="510" height="668" fetchpriority="high">
       <a class="sticker" href="#prova" aria-label="A Prova dos 8">
         <svg class="ring" viewBox="0 0 128 128"><defs><path id="circ" d="M64 64m-50 0a50 50 0 1 1 100 0a50 50 0 1 1-100 0"/></defs><text textLength="310" lengthAdjust="spacing"><textPath href="#circ" id="stickerText" textLength="310" lengthAdjust="spacing">A PROVA DOS 8 ✦ UMA DE CADA ✦ </textPath></text></svg>
         <div class="mid" data-i18n-html="sticker.mid">1<small>de cada</small></div>
