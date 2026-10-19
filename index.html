@@ -255,6 +255,22 @@ section{position:relative}
 .field{display:grid;gap:6px;margin-bottom:18px;font-weight:600;font-size:.92rem}
 .field input{font:inherit;font-weight:500;padding:.8em 1em;border-radius:12px;border:2px solid rgba(159,37,58,.2);background:#fff}
 .field input:focus{outline:none;border-color:var(--bordo)}
+.field input{width:100%;min-width:0;font-size:16px}
+.field .req{color:var(--bordo)}
+.field em{font-style:normal;font-weight:500;opacity:.7}
+.field .err{color:#b3261e;font-weight:600;font-size:.82rem;min-height:0}
+.field .err:empty{display:none}
+.field.invalid input{border-color:#b3261e;background:#fff7f6}
+.field.valid input{border-color:rgba(47,122,58,.55)}
+.who{border:0;padding:0;margin:0 0 6px;min-width:0}
+.who legend{font-family:var(--display);font-weight:900;font-size:1.35rem;margin:0 0 12px;padding:0}
+.who .field{margin-bottom:12px}
+.row2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+.row2 .field>span{white-space:nowrap}
+body.box-view .wa-float{opacity:0;pointer-events:none;transform:scale(.6)}
+.wa-float{transition:transform .35s cubic-bezier(.2,1.2,.4,1),opacity .25s}
+.addr[hidden]{display:none}
+.who-note{font-size:.8rem;opacity:.7;margin:2px 0 18px}
 .totals{margin:0 0 18px;display:grid;gap:4px}
 .totals div{display:flex;justify-content:space-between}
 .totals .grand{font-size:1.25rem;font-weight:900;border-top:2px solid var(--chocolate);padding-top:8px;margin-top:6px}
@@ -262,6 +278,38 @@ section{position:relative}
 .send{display:grid;gap:10px}
 .send .btn{width:100%}
 .fine{font-size:.82rem;opacity:.75;margin:12px 0 0}
+
+
+/* ---------- Checkout (pop-up) ---------- */
+.co-open{width:100%;padding:1.05em 1.4em;font-size:1.05rem}
+.co-open svg{width:1.35em;height:1.35em}
+.co-open:not([aria-disabled="true"]) svg{animation:wiggle 2.8s 1s ease-in-out infinite}
+.checkout .fine{text-align:center}
+dialog.co{border:0;padding:0;background:transparent;width:min(560px,94vw);max-width:none;max-height:92vh;margin:auto;color:var(--chocolate);overflow:visible}
+dialog.co::backdrop{background:rgba(255,250,242,.86);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.co-in{position:relative;background:var(--natas);border-radius:28px;padding:28px 22px 22px;max-height:92vh;overflow:auto;overscroll-behavior:contain;box-shadow:0 30px 80px rgba(36,9,15,.35)}
+dialog.co[open] .co-in{animation:coPop .4s cubic-bezier(.2,1.3,.4,1)}
+@keyframes coPop{from{opacity:0;transform:translateY(24px) scale(.96)}to{opacity:1;transform:none}}
+.co-x{position:absolute;top:14px;right:14px;width:40px;height:40px;border-radius:50%;border:0;background:#fff;color:var(--bordo);font-size:1.6rem;line-height:1;box-shadow:inset 0 0 0 2px rgba(159,37,58,.2)}
+.co-kick{font-family:var(--display);font-style:italic;font-weight:700;color:var(--bordo);margin:0 0 2px;font-size:1.1rem}
+.co-title{font-family:var(--display);font-weight:900;font-size:1.7rem;line-height:1.05;margin:0 48px 16px 0}
+.co-sum{background:#fff;border-radius:18px;padding:14px 16px;margin-bottom:22px;box-shadow:inset 0 0 0 2px rgba(159,37,58,.1)}
+.co-items{list-style:none;margin:0 0 6px;padding:0;font-size:.95rem}
+.co-items li,.co-row{display:flex;justify-content:space-between;gap:12px;padding:5px 0}
+.co-items li{border-bottom:1px dashed rgba(36,9,15,.15)}
+.co-items li span:last-child,.co-row span:last-child{font-weight:700;white-space:nowrap}
+.co-row.save{color:#2f7a3a;font-weight:700}
+.co-row.grand{font-weight:900;font-size:1.15rem;border-top:2px solid var(--chocolate);margin-top:6px;padding-top:10px}
+.co-edit{border:0;background:none;color:var(--bordo);font-weight:700;text-decoration:underline;padding:6px 0 0;font-size:.88rem}
+.co-how{font-weight:800;margin:0 0 10px}
+.co .send{display:grid;gap:10px}
+.co .send .btn{width:100%}
+html.co-lock{overflow:hidden}
+@media (max-width:600px){
+  dialog.co{width:100%;max-height:94vh;margin:auto 0 0}
+  .co-in{border-radius:24px 24px 0 0;max-height:94vh;padding-bottom:calc(22px + env(safe-area-inset-bottom,0px))}
+  @keyframes coPop{from{transform:translateY(100%)}to{transform:none}}
+}
 
 /* ---------- How it works ---------- */
 .how{background:var(--areia)}
@@ -483,18 +531,14 @@ body.cart-open .wa-float{transform:translateY(-82px)}
           <label class="opt"><input type="radio" name="del" value="pickup"><span><b data-i18n="del.pick">Recolha no Carregado</b><small data-i18n="del.pickS">Combinamos dia e hora contigo</small></span><span class="fee" data-i18n="del.free">Grátis</span></label>
           <label class="opt"><input type="radio" name="del" value="lisbon"><span><b data-i18n="del.lx">Entrega em mão em Lisboa</b><small data-i18n="del.lxS">Local e hora a combinar</small></span><span class="fee" data-i18n="del.tbc">A combinar</span></label>
         </fieldset>
-        <label class="field"><span data-i18n="box.name">O teu nome (opcional)</span><input type="text" id="name" autocomplete="given-name" maxlength="60"></label>
         <div class="totals">
           <div><span data-i18n="tot.cookies">Cookies</span><span class="js-sub">0,00€</span></div>
           <div class="save js-save-row" hidden><span data-i18n="tot.save">Poupança na Prova dos 8</span><span class="js-save"></span></div>
           <div><span data-i18n="tot.ship">Entrega</span><span class="js-ship">5,99€</span></div>
           <div class="grand"><span data-i18n="tot.total">Total estimado</span><span class="js-total">0,00€</span></div>
         </div>
-        <div class="send">
-          <a class="btn btn-bordo js-send-wa" href="#" target="_blank" rel="noopener" aria-disabled="true"><svg><use href="#wa"/></svg><span class="js-send-label">Adiciona pelo menos 4 cookies</span></a>
-          <button type="button" class="btn btn-yellow js-send-ig" style="box-shadow:0 5px 0 var(--caramelo)"><svg><use href="#ig"/></svg><span data-i18n="box.ig">Prefiro pelo Instagram</span></button>
-        </div>
-        <p class="fine" data-i18n="box.fine">O total é uma estimativa. Confirmamos tudo contigo (pagamento, data e morada) antes de pormos as cookies no forno.</p>
+        <button type="button" class="btn btn-bordo co-open js-co-open" aria-disabled="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8l9-5 9 5v8l-9 5-9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg><span class="js-co-label">Adiciona pelo menos 4 cookies</span></button>
+        <p class="fine" data-i18n="co.fineShort">No passo seguinte pedimos os teus dados e escolhes se envias por WhatsApp ou Instagram.</p>
       </div>
     </div>
   </div>
@@ -564,6 +608,42 @@ body.cart-open .wa-float{transform:translateY(-82px)}
   <div class="ig-cta"><a class="btn btn-bordo" href="https://www.instagram.com/ohmycookie_pt/" target="_blank" rel="noopener"><svg><use href="#ig"/></svg>@ohmycookie_pt</a></div>
 </section>
 </main>
+
+
+<dialog class="co" id="co" aria-labelledby="co-t">
+  <div class="co-in">
+    <button type="button" class="co-x js-co-close" aria-label="Fechar" data-i18n-aria="co.close">×</button>
+    <p class="co-kick" data-i18n="co.kick">Quase lá!</p>
+    <h3 id="co-t" class="co-title" data-i18n="co.title">Confirma a tua encomenda</h3>
+    <div class="co-sum">
+      <ul class="co-items js-co-items"></ul>
+      <div class="co-row"><span class="js-co-delname"></span><span class="js-co-del"></span></div>
+      <div class="co-row save js-co-saverow" hidden><span data-i18n="tot.save">Poupança na Prova dos 8</span><span class="js-co-save"></span></div>
+      <div class="co-row grand"><span data-i18n="tot.total">Total estimado</span><span class="js-co-total"></span></div>
+      <button type="button" class="co-edit js-co-close" data-i18n="co.edit">Alterar encomenda</button>
+    </div>
+    <fieldset class="who" id="who">
+          <legend data-i18n="who.title">Os teus dados</legend>
+          <label class="field" data-f="name"><span><span data-i18n="who.name">Nome</span> <b class="req">*</b></span><input id="f-name" type="text" autocomplete="name" maxlength="80"><small class="err" aria-live="polite"></small></label>
+          <label class="field" data-f="phone"><span><span data-i18n="who.phone">Telemóvel</span> <b class="req">*</b></span><input id="f-phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="912 345 678"><small class="err" aria-live="polite"></small></label>
+          <label class="field" data-f="email"><span><span data-i18n="who.email">Email</span> <em data-i18n="who.opt">(opcional)</em></span><input id="f-email" type="email" inputmode="email" autocomplete="email" maxlength="120"><small class="err" aria-live="polite"></small></label>
+          <div class="addr" id="addr">
+            <label class="field" data-f="street"><span><span data-i18n="who.street">Morada</span> <b class="req">*</b></span><input id="f-street" type="text" autocomplete="street-address" maxlength="160" data-i18n-ph="who.streetPh" placeholder="Rua, número, andar"><small class="err" aria-live="polite"></small></label>
+            <div class="row2">
+              <label class="field" data-f="zip"><span><span data-i18n="who.zip">Código postal</span> <b class="req">*</b></span><input id="f-zip" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="8" placeholder="0000-000"><small class="err" aria-live="polite"></small></label>
+              <label class="field" data-f="city"><span><span data-i18n="who.city">Localidade</span> <b class="req">*</b></span><input id="f-city" type="text" autocomplete="address-level2" maxlength="60"><small class="err" aria-live="polite"></small></label>
+            </div>
+          </div>
+          <p class="who-note" data-i18n="who.note">Os teus dados seguem apenas na mensagem que nos envias. O site não os guarda.</p>
+        </fieldset>
+    <p class="co-how" data-i18n="co.how">Envia o pedido por:</p>
+        <div class="send">
+          <a class="btn btn-bordo js-send-wa" href="#" target="_blank" rel="noopener" aria-disabled="true"><svg><use href="#wa"/></svg><span class="js-send-label">Adiciona pelo menos 4 cookies</span></a>
+          <button type="button" class="btn btn-yellow js-send-ig" style="box-shadow:0 5px 0 var(--caramelo)"><svg><use href="#ig"/></svg><span data-i18n="box.ig">Prefiro pelo Instagram</span></button>
+        </div>
+        <p class="fine" data-i18n="box.fine">O total é uma estimativa. Confirmamos tudo contigo (pagamento, data e morada) antes de pormos as cookies no forno.</p>
+  </div>
+</dialog>
 
 <footer class="footer">
   <svg class="wave" viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true"><path fill="#e5c393" d="M0 0h1440v20c-120 30-240 30-360 0S840-10 720 20 480 50 360 20 120-10 0 20Z"/></svg>
@@ -654,7 +734,7 @@ const T = {
     "desc.triplechoc":"Estilo NYC, com massa de cacau e pepitas de três chocolates. Para os dias em que um chocolate não chega.",
     "box.title":"A tua caixa",
     "box.sub":"Escolhe, mistura, repete. Quando estiver pronta, enviamos-te a mensagem já escrita para o WhatsApp. Só tens de carregar em enviar.",
-    "box.how":"Como queres receber?","box.name":"O teu nome (opcional)","box.ig":"Prefiro pelo Instagram",
+    "box.how":"Como queres receber?","box.ig":"Prefiro pelo Instagram",
     "box.fine":"O total é uma estimativa. Confirmamos tudo contigo (pagamento, data e morada) antes de pormos as cookies no forno.",
     "del.ship":"Envio para casa","del.shipS":"Chega em 24h, para Portugal continental","del.pick":"Recolha no Carregado","del.pickS":"Combinamos dia e hora contigo",
     "del.lx":"Entrega em mão em Lisboa","del.lxS":"Local e hora a combinar","del.free":"Grátis","del.tbc":"A combinar",
@@ -727,6 +807,35 @@ const T = {
     "prova.core":"sabores, 1 caixa",
     "prova.msg":"uma de cada sabor",
     "prova.saveTag":v=>`Poupas ${v}`,
+    "who.title":"Os teus dados",
+    "who.name":"Nome",
+    "who.phone":"Telemóvel",
+    "who.email":"Email",
+    "who.opt":"(opcional)",
+    "who.street":"Morada",
+    "who.streetPh":"Rua, número, andar",
+    "who.zip":"Código postal",
+    "who.city":"Localidade",
+    "who.note":"Os teus dados seguem apenas na mensagem que nos envias. O site não os guarda.",
+    "who.fix":"Faltam alguns dados para a entrega.",
+    "err.name":"Escreve o teu nome.",
+    "err.phone":"Indica um número de telemóvel válido.",
+    "err.email":"Este email não parece válido.",
+    "err.street":"Indica a rua, o número e o andar.",
+    "err.zip":"Usa o formato 0000-000.",
+    "err.zipIsland":"Por agora só enviamos para Portugal continental.",
+    "err.city":"Indica a localidade.",
+    "send.fill":"Finaliza por WhatsApp",
+    "msg.who":"Dados para a encomenda:",
+    "msg.phone":"Telemóvel",
+    "msg.addr":"Morada de entrega",
+    "co.open":"Fechar a caixa e encomendar",
+    "co.kick":"Quase lá!",
+    "co.title":"Confirma a tua encomenda",
+    "co.edit":"Alterar encomenda",
+    "co.how":"Envia o pedido por:",
+    "co.close":"Fechar",
+    "co.fineShort":"No passo seguinte pedimos os teus dados e escolhes se envias por WhatsApp ou Instagram.",
     "title":"Oh My Cookie® | Cookies recheadas artesanais desde 2021"
   },
   en: {
@@ -752,7 +861,7 @@ const T = {
     "desc.triplechoc":"NYC style, with cocoa dough and three kinds of chocolate chips. For days when one chocolate isn't enough.",
     "box.title":"Your box",
     "box.sub":"Pick, mix, repeat. When it's ready, we'll write the WhatsApp message for you. All you do is hit send.",
-    "box.how":"How would you like it?","box.name":"Your name (optional)","box.ig":"I'd rather use Instagram",
+    "box.how":"How would you like it?","box.ig":"I'd rather use Instagram",
     "box.fine":"The total is an estimate. We'll confirm everything with you (payment, date and address) before the cookies go in the oven.",
     "del.ship":"Home delivery","del.shipS":"Arrives in 24h, across mainland Portugal","del.pick":"Pick up in Carregado","del.pickS":"We'll agree on a day and time",
     "del.lx":"Hand delivery in Lisbon","del.lxS":"Place and time to be agreed","del.free":"Free","del.tbc":"To agree",
@@ -822,6 +931,35 @@ const T = {
     "prova.core":"flavours, 1 box",
     "prova.msg":"one of each flavour",
     "prova.saveTag":v=>`Save ${v}`,
+    "who.title":"Your details",
+    "who.name":"Name",
+    "who.phone":"Mobile",
+    "who.email":"Email",
+    "who.opt":"(optional)",
+    "who.street":"Address",
+    "who.streetPh":"Street, number, floor",
+    "who.zip":"Postcode",
+    "who.city":"Town/City",
+    "who.note":"Your details only go into the message you send us. The site doesn't store them.",
+    "who.fix":"A few delivery details are missing.",
+    "err.name":"Please enter your name.",
+    "err.phone":"Please enter a valid mobile number.",
+    "err.email":"This email doesn't look right.",
+    "err.street":"Please add street, number and floor.",
+    "err.zip":"Use the format 0000-000.",
+    "err.zipIsland":"For now we only ship to mainland Portugal.",
+    "err.city":"Please enter your town or city.",
+    "send.fill":"Finish on WhatsApp",
+    "msg.who":"Order details:",
+    "msg.phone":"Mobile",
+    "msg.addr":"Delivery address",
+    "co.open":"Seal the box & order",
+    "co.kick":"Almost there!",
+    "co.title":"Confirm your order",
+    "co.edit":"Edit order",
+    "co.how":"Send your order via:",
+    "co.close":"Close",
+    "co.fineShort":"Next, we'll ask for your details and you choose WhatsApp or Instagram.",
     "title":"Oh My Cookie® | Handmade stuffed cookies since 2021"
   }
 };
@@ -951,14 +1089,21 @@ function renderBox(bumpId){
 
   // Botões
   const ok = c.n >= CONFIG.minimo;
+  const v = validate();
   const wa = $(".js-send-wa");
   wa.setAttribute("aria-disabled", String(!ok));
-  wa.href = ok ? waLink(buildMessage(c)) : "#";
-  $(".js-send-label").textContent = ok ? t("send.ok") : t("send.min", CONFIG.minimo - c.n);
+  wa.href = ok && v.ok ? waLink(buildMessage(c)) : "#";
+  $(".js-send-label").textContent = !ok ? t("send.min", CONFIG.minimo - c.n) : (v.ok ? t("send.ok") : t("send.fill"));
+  $("#addr").hidden = delivery !== "ship";
+  const co = $(".js-co-open");
+  co.setAttribute("aria-disabled", String(!ok));
+  $(".js-co-label").textContent = ok ? t("co.open") : t("send.min", CONFIG.minimo - c.n);
+  renderSummary(c, lines);
 
   // Barra fixa
   $("#cartbar").classList.toggle("show", c.n > 0 && !boxInView);
   document.body.classList.toggle("cart-open", c.n > 0 && !boxInView);
+  document.body.classList.toggle("box-view", boxInView);
   $(".js-bar-count").textContent = t("count", c.n) + " · " + money(c.sub);
   $(".js-bar-msg").textContent = c.n < CONFIG.minimo ? t("prog.min", CONFIG.minimo - c.n)
     : (delivery === "ship" && falta > 0 ? t("prog.free", money(falta)) : t("prog.ready"));
@@ -978,16 +1123,93 @@ function changeProva(d){
   renderProva(); renderBox("prova");
 }
 
+/* ---------- Pop-up de checkout ---------- */
+function renderSummary(c, lines){
+  $(".js-co-items").innerHTML = lines.join("");
+  $(".js-co-delname").textContent = t("msg.del." + delivery);
+  $(".js-co-del").textContent = c.ship === null ? t("ship.tbc") : (c.ship === 0 ? t("ship.free") : money(c.ship));
+  $(".js-co-saverow").hidden = !(c.save > 0);
+  $(".js-co-save").textContent = "−" + money(c.save);
+  $(".js-co-total").textContent = money(c.total) + (c.ship === null ? " +" : "");
+}
+function openCheckout(){
+  const c = calc();
+  if (c.n < CONFIG.minimo){ toast(t("ig.min")); document.getElementById("sabores").scrollIntoView({behavior:"smooth"}); return; }
+  renderBox();
+  const d = $("#co");
+  if (typeof d.showModal === "function") d.showModal(); else d.setAttribute("open","");
+  document.documentElement.classList.add("co-lock");
+  d.querySelector(".co-in").scrollTop = 0;
+}
+function closeCheckout(){
+  const d = $("#co");
+  if (d.open){ if (typeof d.close === "function") d.close(); else d.removeAttribute("open"); }
+}
+
+/* ---------- Dados do cliente ---------- */
+const F = id => document.getElementById("f-" + id);
+const touched = new Set();
+const val = id => (F(id).value || "").trim();
+function normPhone(v){
+  let d = v.replace(/[^\d+]/g, "");
+  if (d.startsWith("00")) d = "+" + d.slice(2);
+  if (d.startsWith("+351")) d = d.slice(4);
+  return d;
+}
+function validate(){
+  const e = {};
+  if (val("name").length < 2) e.name = "err.name";
+  const ph = normPhone(val("phone"));
+  const okPT = /^[29]\d{8}$/.test(ph);
+  const okIntl = /^\+\d{8,15}$/.test(ph);
+  if (!(okPT || okIntl)) e.phone = "err.phone";
+  if (val("email") && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(val("email"))) e.email = "err.email";
+  if (delivery === "ship"){
+    if (val("street").length < 5) e.street = "err.street";
+    const z = val("zip");
+    if (!/^\d{4}-?\d{3}$/.test(z)) e.zip = "err.zip";
+    else if (z[0] === "9") e.zip = "err.zipIsland";
+    if (val("city").length < 2) e.city = "err.city";
+  }
+  return { ok: Object.keys(e).length === 0, e };
+}
+function showErrors(all){
+  const { e } = validate();
+  $$("#who .field").forEach(l => {
+    const f = l.dataset.f;
+    const inAddr = ["street","zip","city"].includes(f);
+    if (inAddr && delivery !== "ship"){ l.classList.remove("invalid","valid"); l.querySelector(".err").textContent = ""; return; }
+    const show = all || touched.has(f);
+    const bad = show && e[f];
+    l.classList.toggle("invalid", !!bad);
+    l.classList.toggle("valid", show && !e[f] && val(f) !== "");
+    l.querySelector(".err").textContent = bad ? t(e[f]) : "";
+  });
+}
+function focusFirstError(){
+  const { e } = validate();
+  const order = ["name","phone","email","street","zip","city"];
+  const first = order.find(f => e[f]);
+  if (first){ F(first).focus({ preventScroll:true }); F(first).scrollIntoView({ block:"center", behavior:"smooth" }); }
+}
+function customerLines(){
+  const L = ["", t("msg.who")];
+  L.push(`${t("msg.name")}: ${val("name")}`);
+  L.push(`${t("msg.phone")}: ${val("phone")}`);
+  if (val("email")) L.push(`Email: ${val("email")}`);
+  if (delivery === "ship") L.push(`${t("msg.addr")}: ${val("street")}, ${val("zip")} ${val("city")}`);
+  return L;
+}
+
 /* ---------- Mensagem ---------- */
 function buildMessage(c){
-  const name = $("#name").value.trim();
   const L = [t("msg.hello"), ""];
   if (prova) L.push(`• ${prova}× ${t("prova.name")} (${t("prova.msg")})`);
   FLAVOURS.forEach(f => { if (qty[f.id]) L.push(`• ${qty[f.id]}× ${f.name}`); });
   L.push("", `${t("msg.total")}: ${t("count", c.n)} (${money(c.sub)})`);
   L.push(`${t("msg.ship")}: ${t("msg.del." + delivery)}${c.ship ? " (+" + money(c.ship) + ")" : (c.ship === 0 ? " (" + t("ship.free") + ")" : "")}`);
   L.push(`${t("msg.est")}: ${money(c.total)}`);
-  if (name) L.push(`${t("msg.name")}: ${name}`);
+  L.push(...customerLines());
   L.push("", t("msg.from"));
   return L.join("\n");
 }
@@ -1033,6 +1255,9 @@ function applyLang(){
   $$("[data-i18n]").forEach(el => { const v = t(el.dataset.i18n); if (typeof v === "string") el.textContent = v; });
   $$("[data-i18n-html]").forEach(el => { el.innerHTML = t(el.dataset.i18nHtml).replace("{unit}", money(CONFIG.precoUnidade)).replace("{pist}", money(unitPrice(FLAVOURS.find(f=>f.id==="pistache")))); });
   $$("[data-i18n-alt]").forEach(el => { el.alt = t(el.dataset.i18nAlt); });
+  $$("[data-i18n-ph]").forEach(el => { el.placeholder = t(el.dataset.i18nPh); });
+  $$("[data-i18n-aria]").forEach(el => { el.setAttribute("aria-label", t(el.dataset.i18nAria)); });
+  if (typeof showErrors === "function" && document.getElementById("f-name")) showErrors(false);
   $$(".lang button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
   $("#stickerText").textContent = t("sticker");
   const items = t("ticker").map(s => `<li>${s}</li>`).join("");
@@ -1043,11 +1268,27 @@ function applyLang(){
 $$(".lang button").forEach(b => b.addEventListener("click", () => { lang = b.dataset.lang; store.set("omc-lang", lang); applyLang(); }));
 
 /* ---------- Eventos ---------- */
-$$('input[name="del"]').forEach(r => r.addEventListener("change", e => { delivery = e.target.value; renderBox(); }));
-$("#name").addEventListener("input", () => renderBox());
+$$('input[name="del"]').forEach(r => r.addEventListener("change", e => { delivery = e.target.value; renderBox(); showErrors(false); }));
+["name","phone","email","street","zip","city"].forEach(id => {
+  const el = F(id);
+  el.addEventListener("input", () => {
+    if (id === "zip"){ const d = el.value.replace(/\D/g, "").slice(0, 7); el.value = d.length > 4 ? d.slice(0,4) + "-" + d.slice(4) : d; }
+    renderBox(); showErrors(false);
+  });
+  el.addEventListener("blur", () => { if (el.value.trim() || id !== "email") touched.add(id); showErrors(false); });
+});
+$(".js-co-open").addEventListener("click", openCheckout);
+$$(".js-co-close").forEach(b => b.addEventListener("click", closeCheckout));
+$("#co").addEventListener("click", e => { if (e.target === e.currentTarget) closeCheckout(); });
+$("#co").addEventListener("close", () => document.documentElement.classList.remove("co-lock"));
+$(".js-send-wa").addEventListener("click", e => {
+  if (calc().n < CONFIG.minimo){ e.preventDefault(); return; }
+  if (!validate().ok){ e.preventDefault(); showErrors(true); focusFirstError(); toast(t("who.fix")); }
+});
 $(".js-send-ig").addEventListener("click", async () => {
   const c = calc();
   if (c.n < CONFIG.minimo){ toast(t("ig.min")); document.getElementById("sabores").scrollIntoView(); return; }
+  if (!validate().ok){ showErrors(true); focusFirstError(); toast(t("who.fix")); return; }
   const text = buildMessage(c);
   try { await navigator.clipboard.writeText(text); } catch(e){
     const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select();
